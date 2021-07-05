@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <% @title="Ruby on Rails - Weather" %>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <link href="weather_page.css" rel="stylesheet">
+  </head>
+  <body class="d-flex h-100 text-center text-white bg-dark">
+    
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="mb-auto">
+        <div>
+        <% if @city != nil and @city != ""  and @weather_data['cod'] == 200%>
+          <h3 class="float-md-start mb-0">Weather for:</h3><%= @current_datetime %>
+        <% else %>
+          <h3 class="float-md-start mb-0">Check weather in your city!</h3>
+        <% end %>
+        </div>
+      </header>
+
+      <main class="px-3">
+      <% if !@city.blank? and @weather_data["cod"] == 200%>
+
+        <div class="container" id="container">
+          <div>
+            <div class="card-body"><h5 class="card-title"><%= @city %>,  <%= @weather_data['sys']['country'] %></h5>
+
+              <h6 class="card-subtitle mb-2">Current temperature: <%= @weather_data['main']['temp'] %> °C</h6>
+              <p class="card-text">Feels Like: <%= @weather_data['main']['feels_like'] %> °C</p>
+              <p class="card-text">Max: <%= @weather_data['main']['temp_max'] %> °C, Min: <%= @weather_data['main']['temp_min'] %> °C</p>
+
+              <div id="img-container">overcast clouds
+                <img src="https://openweathermap.org/img/wn/<%= @weather_data['weather'][0]['icon'] %>@2x.png">
+              </div>
+
+            </div>
+
+          </div>
+        <div>
+
+      <% else %>
+
+
+          <form>
+            <div class="row align-items-center">
+
+                <div class="col">
+                    <input name="city" class="form-control form-control-lg form-control-borderless" type="search" placeholder="City name e.g. Warsaw">
+                </div>
+                    
+
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-success" type="submit">Check weather</button>
+                </div>
+            </div>
+            <% if @city == ""%>
+              <small class="text-danger">The city name cannot be empty</small>
+            <% end %>
+
+
+            <% if @weather_data['cod'] == "404" %>
+              <small class="text-danger">The city was not found</small>
+            <% end %>
+        </form>
+
+
+      <% end %>
+      </main>
+
+      <footer class="mt-auto text-white-50">
+        <p>Made with <i style="color: #9B111E" class="fas fa-gem"></i> Ruby on Rails and ❤️</a></p>
+      </footer>
+    </div>
+
+    </body>
+</html>
